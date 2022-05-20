@@ -1,0 +1,87 @@
+{% extends "auctions/layout.html" %} 
+{% block body %}
+<div class="row">
+  <div class="col-6">
+    <h1>
+      this product is created by
+      <span style="color: mediumblue">{{ list.user }} </span>
+    </h1>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h4>
+            TITLE : <span class="badge bg-primary">{{ list.title }}</span><br />
+          </h4>
+        </div>
+        <h6>{{ list.description }}</h6>
+      </div>
+      <img src="{{ list.imgurl }}" />
+    </div>
+
+    {% if list.active == True %}
+    <div class="col-5">
+      <form method="post">
+        {% csrf_token %}
+        <h3>the start bid {{ list.price }}</h3>
+        {{ bid_form }}
+        <button class="btn btn-primary" type="submit">bid on this</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if list.active == True %}
+  <div class="col-5" style="float: right">
+    <form action="{% url 'watchlist_button' list.id %}" style="display: inline">
+      {% if list.on_watch_list == True %}
+      <button class="btn btn-primary">remove from watchlist</button>
+      {% else %}
+      <button class="btn btn-primary">add to watchlist</button>
+      {% endif %}
+    </form>
+
+   {% if request.user == list.user %}
+    <form style="display: inline" action="{% url 'close_list' list.id %}">
+      <button type="submit" class="btn btn-danger">Close</button>
+    </form>
+    {% endif %} 
+    
+    {% if list.active == False %}
+      <div class="col-5" style="float: right">
+          {% if winner %}
+                <h5>the winner is {{ winner.user }} in bid {{ winner.bid }}</h5>
+           {% else %} no winner {% endif %}
+       </div>
+    {% endif %}
+      </div>
+    </div>
+
+<br />
+
+<div class="row">
+  <div class="container">
+    <div class="row">
+      {% for comment in comments %}
+      <div class="row">
+        <div class="card" style="width: 18rem">
+          <div class="card-body">
+            <h5 class="card-title">by {{ comment.user }}</h5>
+            <p class="card-text">{{ comment.comments }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if list.active == True %}
+    <div class="row">
+      <div class="row">
+        <form method="post">
+          {% csrf_token %} {{ comment_form }}
+          <button class="btn btn-primary m-1">Comment</button>
+        </form>
+      </div>
+    </div>
+    {% endif %} {% endif %}
+  </div>
+</div>
+{% endblock %}
