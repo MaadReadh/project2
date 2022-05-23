@@ -2,10 +2,6 @@
 {% block body %}
 <div class="row">
   <div class="col-6">
-    {% if message %}
-    <div>{{ message }}</div>
-     {% endif %}
-
     <h1>
       this product is created by
       <span style="color: mediumblue">{{ list.user }} </span>
@@ -31,6 +27,9 @@
         {{ bid_form }}
         <button class="btn btn-primary" type="submit">bid on this</button>
         {% endif %}
+        {% if message %}
+        <div  class="alert alert-danger" role="alert">{{ message }}</div>
+         {% endif %}
       </form>
     </div>
     {% endif %}
