@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from django.utils import timezone
 
 class User(AbstractUser):
     pass
@@ -23,7 +23,7 @@ class Listing(models.Model):
     description = models.CharField(max_length=225)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     imgurl = models.URLField(max_length=200)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(default=timezone.now)
     price = models.FloatField()
     on_watch_list = models.BooleanField(default=False)
     active = models.BooleanField(default=True)

@@ -18,6 +18,7 @@ class ListingForm(forms.ModelForm):
             'title',
             'description',
             'imgurl',
+            'date',
             'price',
             'category',
         ]

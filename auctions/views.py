@@ -108,8 +108,7 @@ def show_category(request, id):
 
 
 def show_listing(request, id):
-    message=''
-    txt_color='text-primary'
+   
     list = Listing.objects.get(id=id)
     bid_form = BidForm()
     comment_form = CommentForm()
@@ -125,8 +124,13 @@ def show_listing(request, id):
             bid = request.POST.get('bid')
             bid = float(bid)
             print(bid)
-            if bid < list.price:
-                return redirect('show_list', id)
+            if bid < list.price:   
+                
+                return render(request, 'auctions/show_list.html', {
+                "message": "previous bids is greatar than your bid."
+            })
+                
+
             elif bid > list.price:
                 list.price = bid
                 list.save()

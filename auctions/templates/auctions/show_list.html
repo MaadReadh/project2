@@ -23,8 +23,10 @@
       <form method="post">
         {% csrf_token %}
         <h3>the start bid {{ list.price }}</h3>
+        {% if user.is_authenticated %}
         {{ bid_form }}
         <button class="btn btn-primary" type="submit">bid on this</button>
+        {% endif %}
       </form>
     </div>
     {% endif %}
@@ -33,10 +35,13 @@
   {% if list.active == True %}
   <div class="col-5" style="float: right">
     <form action="{% url 'watchlist_button' list.id %}" style="display: inline">
+      
+      {% if user.is_authenticated %}
       {% if list.on_watch_list == True %}
       <button class="btn btn-primary">remove from watchlist</button>
       {% else %}
       <button class="btn btn-primary">add to watchlist</button>
+      {% endif %}
       {% endif %}
     </form>
 
@@ -45,7 +50,7 @@
       <button type="submit" class="btn btn-danger">Close</button>
     </form>
     {% endif %} 
-    
+    {% endif %}
     {% if list.active == False %}
       <div class="col-5" style="float: right">
           {% if winner %}
@@ -72,6 +77,7 @@
       </div>
       {% endfor %}
     </div>
+    {% if user.is_authenticated %}
     {% if list.active == True %}
     <div class="row">
       <div class="row">
@@ -81,7 +87,9 @@
         </form>
       </div>
     </div>
-    {% endif %} {% endif %}
+    {% endif %}
+    {% endif %}
+
   </div>
 </div>
 {% endblock %}
