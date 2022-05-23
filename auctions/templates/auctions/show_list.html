@@ -2,6 +2,10 @@
 {% block body %}
 <div class="row">
   <div class="col-6">
+    {% if message %}
+    <div>{{ message }}</div>
+     {% endif %}
+
     <h1>
       this product is created by
       <span style="color: mediumblue">{{ list.user }} </span>

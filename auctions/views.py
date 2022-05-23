@@ -103,6 +103,7 @@ def category_list(request):
 
 @login_required
 def show_category(request, id):
+
     active_list = Listing.objects.all().filter(category_id=id, active=True)
     return render(request, 'auctions/index.html', {'active_list': active_list})
 
@@ -124,18 +125,22 @@ def show_listing(request, id):
             bid = request.POST.get('bid')
             bid = float(bid)
             print(bid)
-            if bid < list.price:   
-                
-                return render(request, 'auctions/show_list.html', {
-                "message": "previous bids is greatar than your bid."
-            })
-                
-
-            elif bid > list.price:
+            if bid > list.price:
                 list.price = bid
                 list.save()
                 obj = Bid.objects.create(user=request.user, listing=list, bid=bid)
                 obj.save()
+
+            else :
+                return render(request, 'auctions/show_list.html',context= {
+               
+                'list': list,
+                "message": "previous bids is greatar than your bid",
+                'bid_form': bid_form,
+                'comment_form': comment_form,
+                'comments': comments,
+            })
+
         except:
             comment = request.POST.get('comments')
             obj = Comment.objects.create(user=request.user,comments=comment,listing=list)
